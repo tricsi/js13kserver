@@ -24,7 +24,8 @@ require('fs').readFile('./public/shared.js', 'utf8', function (err, shared) {
             return console.log(err);
         }
 
-        var express = require("express"),
+        var path = require("path"),
+            express = require("express"),
             app = express(),
             server = require("http").Server(app),
             io = require("socket.io")(server),
@@ -34,6 +35,7 @@ require('fs').readFile('./public/shared.js', 'utf8', function (err, shared) {
         io.on('connection', sandbox.module.exports);
         app.set('port', (process.env.PORT || 3000));
         app.use(express.static('public'));
+        app.use('/simplepeer.js', express.static(path.join(__dirname, 'node_modules/simple-peer/simplepeer.min.js')));
         server.listen(app.get('port'), function () {
             console.log("Server started at port: " + app.get('port'));
         });

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>WebRTC</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+#outgoing { width: 600px; word-wrap: break-word; }
+</style>
+</head>
+<body>
+
+<form>
+    <textarea id="incoming"></textarea>
+    <button type="submit">submit</button>
+</form>
+<pre id="outgoing"></pre>
+    
+<script src="/simplepeer.js"></script>
+<script type="text/javascript">
+    var p = new SimplePeer({
+        initiator: location.hash === '#1',
+        trickle: false
+    });
+    p.on('error', function (err) {
+        console.log(err);
+    });
+    p.on('signal', function (data) {
+        console.log(data);
+        document.querySelector('#outgoing').textContent = JSON.stringify(data);
+    });
+    p.on('connect', function () {
+        console.log('CONNECT');
+        p.send('whatever' + Math.random());
+    });
+    p.on('data', function (data) {
+        console.log('data: ' + data);
+    });
+    document.querySelector('form').addEventListener('submit', function (ev) {
+        ev.preventDefault()
+        p.signal(JSON.parse(document.querySelector('#incoming').value));
+    });
+</script>
+
+</body>
+</html>

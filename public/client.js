@@ -2,7 +2,8 @@
 
 (function () {
 
-    var socket, //Socket.IO client
+    var peer, //SimplePeer client
+        socket, //Socket.IO client
         buttons, //Button elements
         message, //Message element
         score, //Score element
@@ -52,12 +53,41 @@
     }
 
     /**
+     * Create peer connection
+     * @param {boolean} initiator
+     */
+    function createPeer(initiator) {
+        peer = new SimplePeer({ initiator: initiator, trickle: false });
+
+        peer.on('error', function (err) {
+            console.log("Error: " + err);
+        });
+
+        peer.on('signal', function (data) {
+            socket.emit("signal", data);
+        });
+
+        peer.on('connect', function () {
+            peer.send('whatever' + Math.random());
+        });
+
+        peer.on('data', function (data) {
+            console.log('Data: ' + data);
+        });
+    }
+
+    /**
      * Binde Socket.IO and button events
      */
     function bind() {
 
-        socket.on("start", function () {
+        socket.on("signal", function (data) {
+            peer.signal(data);
+        });
+
+        socket.on("start", function (initiator) {
             enableButtons();
+            createPeer(initiator);
             setMessage("Round " + (points.win + points.lose + points.draw + 1));
         });
 

@@ -43,8 +43,8 @@ function Game(user1, user2) {
  * Start new game
  */
 Game.prototype.start = function () {
-	this.user1.start(this, this.user2);
-	this.user2.start(this, this.user1);
+	this.user1.start(this, this.user2, true);
+	this.user2.start(this, this.user1, false);
 }
 
 /**
@@ -107,15 +107,22 @@ User.prototype.setGuess = function (guess) {
 };
 
 /**
+ * Peer signal
+ */
+User.prototype.signal = function (data) {
+	this.opponent.socket.emit("signal", data);
+};
+
+/**
  * Start new game
  * @param {Game} game
  * @param {User} opponent
  */
-User.prototype.start = function (game, opponent) {
+User.prototype.start = function (game, opponent, initiator) {
 	this.game = game;
 	this.opponent = opponent;
 	this.guess = GUESS_NO;
-	this.socket.emit("start");		
+	this.socket.emit("start", initiator);		
 };
 
 /**
@@ -173,6 +180,11 @@ module.exports = function (socket) {
 			user.game.score();
 			user.game.start();
 		}
+	});
+
+	socket.on("signal", function (data) {
+		console.log("Signal: " + JSON.stringify(data));
+		user.signal(data);
 	});
 
 	console.log("Connected: " + socket.id);

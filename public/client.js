@@ -86,9 +86,9 @@
         });
 
         peer.on('stream', function (stream) {
-            video.srcObject = stream;
+            video.src = window.URL.createObjectURL(stream);
             video.play();
-            console.log(stream);
+            console.log(video.src);
         });
 
         return peer;

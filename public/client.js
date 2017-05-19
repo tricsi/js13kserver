@@ -2,8 +2,12 @@
 
 (function () {
 
-    var peer, //SimplePeer client
+    var incoming, //SimplePeer incoming client
+        outgoing, //SimplePeer outgoing client
         socket, //Socket.IO client
+        chat, //Video chat checkbox
+        video, //Video element
+        stream, //Video stream
         buttons, //Button elements
         message, //Message element
         score, //Score element
@@ -56,15 +60,21 @@
      * Create peer connection
      * @param {boolean} initiator
      */
-    function createPeer(initiator) {
-        peer = new SimplePeer({ initiator: initiator, trickle: false });
+    function createPeer(initiator, stream) {
+        var peer = new SimplePeer({
+            initiator: initiator,
+            stream: stream
+        });
 
         peer.on('error', function (err) {
             console.log("Error: " + err);
         });
 
         peer.on('signal', function (data) {
-            socket.emit("signal", data);
+            //socket.emit("signal", data);
+            incoming = createPeer(false);
+            incoming.signal(data);
+            console.log(JSON.stringify(data));
         });
 
         peer.on('connect', function () {
@@ -74,6 +84,14 @@
         peer.on('data', function (data) {
             console.log('Data: ' + data);
         });
+
+        peer.on('stream', function (stream) {
+            video.srcObject = stream;
+            video.play();
+            console.log(stream);
+        });
+
+        return peer;
     }
 
     /**
@@ -82,12 +100,12 @@
     function bind() {
 
         socket.on("signal", function (data) {
-            peer.signal(data);
+            incoming = createPeer(false);
+            incoming.signal(data);
         });
 
         socket.on("start", function (initiator) {
             enableButtons();
-            createPeer(initiator);
             setMessage("Round " + (points.win + points.lose + points.draw + 1));
         });
 
@@ -126,6 +144,27 @@
             setMessage("Connection error!");
         });
 
+        chat.addEventListener("change", function (e) {
+            if (chat.checked) {
+                navigator.mediaDevices.getUserMedia({
+                    video: { width: 320, height: 240 },
+                    audio: true
+                }).then(function(stream) {
+                    outgoing = createPeer(true, stream);
+                }).catch(function(err) {
+                    chat.checked = false;
+                });
+            } else if (outgoing) {
+                outgoing.stream.getVideoTracks().forEach(function(track) {
+                    track.stop();
+                });
+                outgoing.stream.getAudioTracks().forEach(function(track) {
+                    track.stop();
+                });
+                outgoing.destroy();
+            }
+        }, false);
+
         for (var i = 0; i < buttons.length; i++) {
             (function (button, guess) {
                 button.addEventListener("click", function (e) {
@@ -141,10 +180,15 @@
      */
     function init() {
         socket = io({ upgrade: false, transports: ["websocket"] });
+        chat = document.getElementById("chat");
+        video = document.getElementById("video");
         buttons = document.getElementsByTagName("button");
         message = document.getElementById("message");
         score = document.getElementById("score");
         disableButtons();
+        if (SimplePeer.WEBRTC_SUPPORT) {
+            chat.removeAttribute("disabled"); 
+        }
         bind();
     }
 

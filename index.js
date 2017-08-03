@@ -15,6 +15,8 @@ function createSandbox() {
     sandbox.setInterval = setInterval;
     sandbox.clearTimeout = clearTimeout;
     sandbox.clearInterval = clearInterval;
+    sandbox.redis = require('redis');
+    sandbox.process = { env: process.env };
     return sandbox;
 };
 

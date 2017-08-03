@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "express": "4.15.*",
+    "redis": "2.7.*",
     "socket.io": "2.0.*"
   }
 }

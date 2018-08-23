@@ -21,7 +21,8 @@ function createSandbox() {
         clearTimeout,
         setInterval,
         clearInterval,
-        storage: storage.interface
+        storage: storage.interface,
+        io: io
     };
 
     Object.defineProperty(sandbox, 'module', {

@@ -21,6 +21,7 @@ function createSandbox() {
         clearTimeout,
         setInterval,
         clearInterval,
+        Buffer,
         storage: storage.interface,
         io: io
     };

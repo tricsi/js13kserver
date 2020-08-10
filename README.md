@@ -4,7 +4,7 @@ Game server for the [js13kGames Competition](http://js13kgames.com/).
 
 ## Install
 
-[Download](https://github.com/js13kgames/js13kserver/archive/master.zip) the skeleton. Extract the files and install the third party libraries with `npm`. 
+[Download](https://github.com/js13kgames/js13kserver/archive/master.zip) the skeleton. Extract the files and install the third party libraries with `npm`.
 
     npm install
 
@@ -12,9 +12,13 @@ Game server for the [js13kGames Competition](http://js13kgames.com/).
 
 You can run the server locally with the following command:
 
-    npm start
+    npm run start:dev
 
 You can reach the test server at [http://localhost:3000](http://localhost:3000)
+
+The dev server uses `nodemon` to auto restart when you change some source file. If you want to pass some parameter to it, just add an `--` after `start:dev`. An example:
+
+    npm run start:dev -- --inspect
 
 ## Code structure
 
@@ -45,7 +49,7 @@ All server category entries must be hosted on [Heroku](https://www.heroku.com/).
 2. Create new WebApp on heroku
 3. Add Heroku Postgres add-on (optional)
 4. Connect your WebApp with the GitHub repository
-5. Deploy your code 
+5. Deploy your code
 
 You can find more information about the platform on the [Heroku Dev Center](https://devcenter.heroku.com/) site.
 
@@ -67,7 +71,7 @@ You can find more information about the platform on the [Heroku Dev Center](http
   - Your game will run in a node.js based sandbox environment. That means you will not really use node. You cannot require modules and your own modules shipped by your 13k pack.
 
 * Do not leak the sandbox
-  - This is not a hacking competition. This is a way to help the competition admins, the site persistence, and you. Do not touch the `procfile` and the skeleton code. 
+  - This is not a hacking competition. This is a way to help the competition admins, the site persistence, and you. Do not touch the `procfile` and the skeleton code.
 
 * Socket.io client lib
   - You can use it. Simply add `<script src="/socket.io/socket.io.js"></script>` to your HTML and that will be loaded. No server configuration will be needed. The sandbox already did it.
@@ -79,7 +83,7 @@ You can find more information about the platform on the [Heroku Dev Center](http
   - There's a simple "Rock, Paper, Scissors" example in the public folder.
 
 * I have more questions!
-  - Feel free to send them to [server@js13kgames.com](mailto:server@js13kgames.com). 
+  - Feel free to send them to [server@js13kgames.com](mailto:server@js13kgames.com).
 
 ## FAQ
 
@@ -88,7 +92,7 @@ You can find more information about the platform on the [Heroku Dev Center](http
 
 * Can I add more npm packages?
   - Yes, but you cannot use them in your game code.
- 
+
 * What files count in the 13kb limit?
   - All files in the `public` folder.
 

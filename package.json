@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "start:dev": "nodemon",
     "test": "mocha test"
   },
   "keywords": [
@@ -14,6 +15,9 @@
   ],
   "engines": {
     "node": "8.*"
+  },
+  "nodemonConfig": {
+    "ext": "js,mjs,ts,json,css,scss,sass,html,pug"
   },
   "dependencies": {
     "archiver": "^4.0.2",
@@ -29,6 +33,7 @@
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
-    "mocha": "^8.0.1"
+    "mocha": "^8.0.1",
+    "nodemon": "^2.0.4"
   }
 }

@@ -72,6 +72,14 @@ You can find more information about the platform on the [Heroku Dev Center](http
 * Socket.io client lib
   - You can use it. Simply add `<script src="/socket.io/socket.io.js"></script>` to your HTML and that will be loaded. No server configuration will be needed. The sandbox already did it.
 
+* Google's free STUN servers are the only allowed external services:
+  * stun.l.google.com:19302
+  * stun1.l.google.com:19302
+  * stun2.l.google.com:19302
+  * stun3.l.google.com:19302
+  * stun4.l.google.com:19302
+
+
 * Can I test the sandbox before submitting?
   - Yes, you can and you must! Installing and getting it running is simple. Visit the project page at [https://github.com/js13kGames/js13kserver](https://github.com/js13kGames/js13kserver).
 

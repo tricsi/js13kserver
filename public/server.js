@@ -35,8 +35,8 @@ function removeUser(user) {
 class Game {
 
 	/**
-	 * @param {User} user1 
-	 * @param {User} user2 
+	 * @param {User} user1
+	 * @param {User} user2
 	 */
 	constructor(user1, user2) {
 		this.user1 = user1;

@@ -1,7 +1,6 @@
 "use strict";
 
 const fs = require('fs');
-const path = require('path');
 const archiver = require('archiver');
 const express = require('express');
 const session = require('express-session');
@@ -46,7 +45,7 @@ function createSandbox() {
 
 function createZip() {
     return new Promise((resolve, reject) => {
-        const archive = archiver('zip', { zlib: { level: 9 } });
+        const archive = archiver('zip', {zlib: { level: 9 }});
         const output = fs.createWriteStream('dist.zip');
         output.on('close', () => {
             packageSize = archive.pointer();
@@ -68,7 +67,6 @@ function createZip() {
 
 function recurrentLogStorageSize() {
     let lastStoragePct = -1;
-
     function logStorageSize() {
         let storageSize = storage.interface.size();
         let pct = storageSize ? storageSize / limit * 100 : 0;
@@ -84,7 +82,6 @@ function recurrentLogStorageSize() {
 
 app.set('port', (process.env.PORT || 3000))
     .set('storage', process.env.DATABASE_URL || 'sqlite:storage.sqlite')
-    .use('/simplepeer.js', express.static(path.join(__dirname, 'node_modules/simple-peer/simplepeer.min.js')))
     .get('/server-info', (req, res) => {
         let storageSize = storage.interface.size();
         res.set('Content-Type', 'text/plain').send([
@@ -114,17 +111,17 @@ storage.init(app.get('storage')).then(() => {
     server.listen(app.get('port'), () => {
         console.log(chalk.blue(`Server started in ${runMode} mode at port ${app.get('port')}`));
         createZip()
-            .then(() => {
-                if (isDevelopment) {
-                    let pct = packageSize / limit * 100;
-                    let color = pct <= 100 ? chalk.green : chalk.red;
-                    console.log(color(`Package: ${packageSize} byte / ${pct.toFixed(2)}%`));
-                    recurrentLogStorageSize();
-                }
-            })
-            .catch((err) => {
-                console.error(err.message)
-            });
+        .then(()=> {
+            if (isDevelopment) {
+                let pct = packageSize / limit * 100;
+                let color = pct <= 100 ? chalk.green : chalk.red;
+                console.log(color(`Package: ${packageSize} byte / ${pct.toFixed(2)}%`));
+                recurrentLogStorageSize();
+            }
+        })
+        .catch((err)=> {
+            console.error(err.message)
+        });
     });
 }).catch(err => {
     console.error(err);

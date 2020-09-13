@@ -8,7 +8,7 @@ Game server for the [js13kGames Competition](http://js13kgames.com/).
 
     npm install
 
-## Runinng
+## Running
 
 You can run the server locally with the following command:
 

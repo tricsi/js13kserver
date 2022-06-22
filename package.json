@@ -32,7 +32,7 @@
         "sequelize": "^6.3.4",
         "simple-peer": "^9.7.2",
         "socket.io": "^2.3.0",
-        "sqlite3": "^5.0.0"
+        "sqlite3": "^5.0.3"
     },
     "devDependencies": {
         "mocha": "^8.1.1",

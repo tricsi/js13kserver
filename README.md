@@ -8,7 +8,7 @@ Game server for the [js13kGames Competition](http://js13kgames.com/).
 
     npm install
 
-## Runinng
+## Running
 
 You can run the server locally with the following command:
 
@@ -66,6 +66,7 @@ You can find more information about the platform on the [Heroku Dev Center](http
 
 * Package size still below 13 kB
   - Game package will contain all the game code and assets, for the client and the server.
+  - That also means you must not use the server database to store extra code or assets, that was not created by its users. If your game needs to seed the DB, your 13k code must do it.
 
 * Sandboxed environment
   - Your game will run in a node.js based sandbox environment. That means you will not really use node. You cannot require modules and your own modules shipped by your 13k pack.
